@@ -1,0 +1,44 @@
+.main-box {
+    border: 1px solid black;
+    margin: auto;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    width: 860px;
+    height: 800px;
+    border-radius: 25px;
+    flex-flow: wrap;
+    place-content: flex-start;
+}
+.contents-box {
+    border: 1px solid black;
+    margin-top: 20px;
+    margin-left: 30px;
+    height: 250px;
+    width: 250px;
+}
+.contents-title{
+    height: 20px;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+.contents-img{
+    height: 150px;
+    width: 100%;
+}
+
+.contents-nick{
+    
+}
+
+.info-box {
+    
+}
+.date {
+
+}
+.info-btn {
+
+}
+
