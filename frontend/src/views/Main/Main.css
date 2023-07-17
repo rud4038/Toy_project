@@ -11,7 +11,6 @@
     place-content: flex-start;
 }
 .contents-box {
-    border: 1px solid black;
     margin-top: 20px;
     margin-left: 30px;
     height: 250px;
@@ -21,24 +20,39 @@
     height: 20px;
     font-size: 16px;
     font-weight: 700;
-    margin-bottom: 10px;
+    margin-bottom: 2px;
+    display: flex;
+}
+.contents-img-box {
+    position: relative;
+    overflow: hidden;
 }
 .contents-img{
     height: 150px;
     width: 100%;
 }
-
-.contents-nick{
-    
+.contents-detail {
+    display: flex;
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 5px;
 }
+
 
 .info-box {
-    
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
 }
-.date {
 
-}
 .info-btn {
-
+    position: absolute;
+    border: 0px;
+    right: 15px;
+    bottom: 15px;
+    font-size: 26px;
+}
+.info-btn:hover{
+    cursor: pointer;
 }
 
