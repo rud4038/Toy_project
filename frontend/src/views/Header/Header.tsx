@@ -11,6 +11,7 @@ function Header() {
                 </div>
                 <div className='nav-right'>
                     <Link to={'/Login'}>Login</Link>
+                    <Link to={'/Contents'}>글 작성</Link>
                 </div>
             </header>
         </div>

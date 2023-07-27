@@ -7,6 +7,7 @@ import Login from './views/Login/Login';
 import Member from './views/Member/Member';
 import Findid from './views/FindId/Findid';
 import Findpassword from './views/Findpassword/Findpassword';
+import Contents from './views/Contents/Contents';
 function App() {
   return (
     <div className="App">
@@ -18,6 +19,7 @@ function App() {
           <Route path='Member' element = {<Member />} />
           <Route path='Findid' element = {<Findid />} />
           <Route path='Findpassword' element = {<Findpassword />} />
+          <Route path='Contents' element = {<Contents />} />
         </Routes>
       </BrowserRouter>
     </div>
