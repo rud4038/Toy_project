@@ -1,16 +1,15 @@
 package backend.backend.projects.dto;
 
-import lombok.AllArgsConstructor;
+import org.hibernate.internal.build.AllowSysOut;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @NoArgsConstructor
-@AllArgsConstructor
-public class MemberDto {
+@AllowSysOut
+@Data
+public class FindPasswordDto {
 	private String id;
-	private String nickname;
 	private String name;
 	private String number;
-	private String password;
 }

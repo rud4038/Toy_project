@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 function Member() {
     const [id, setId] = useState<String>('');
+    const [nickname, setNickName] = useState<String>('');
     const [name, setName] = useState<String>('');
     const [number, setNumber] = useState<String>('');
     const [password, setPassword] = useState<String>('');
@@ -18,6 +19,7 @@ function Member() {
     const SignUpRequest = async() => {
         const data = {
             id,
+            nickname,
             name,
             number,
             password
@@ -30,9 +32,10 @@ function Member() {
         <div>
             <div className='Member-title'>회원가입</div>
             <div className='Member-box'>
+                <input type="text" className='Member-id click' placeholder='아이디를 입력하세요'onChange={(e) => setId(e.target.value)}/>
+                <input type="text" className='Member-id click' placeholder='닉네임을 입력하세요'onChange={(e) => setNickName(e.target.value)}/>
                 <input type="text" className='Member-id click' placeholder='이름을 입력하세요'onChange={(e) => setName(e.target.value)}/>
                 <input type="text" className='Member-id click' placeholder='연락처를 -없이 입력하세요'onChange={(e) => setNumber(e.target.value)}/>
-                <input type="text" className='Member-id click' placeholder='아이디를 입력하세요'onChange={(e) => setId(e.target.value)}/>
                 <input type="password" className='Member-id click' placeholder='비밀번호를 영문,숫자 조합 10자리 이상 입력하세요'onChange={(e) => setPassword(e.target.value)}/>
                 <input type="password" className='Member-password click' placeholder='비밀번호를 다시 한번 입력하세요'onChange={(e) => setPassword2(e.target.value)}/>
                 <button className='Member-btn' onClick={() => inputCheck()}>회원가입</button>

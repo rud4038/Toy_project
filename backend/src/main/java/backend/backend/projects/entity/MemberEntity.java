@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 public class MemberEntity {
 	@Id
 	private String id;
+	private String nickname;
 	private String name;
 	private String number;
 	private String password;
