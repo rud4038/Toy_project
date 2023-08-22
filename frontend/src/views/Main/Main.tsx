@@ -1,6 +1,6 @@
 import React from 'react';
 import './Main.css'
-import cookImg from '../../assect/imgs/books.jpg';
+import cookImg from '../../assest/imgs/books.jpg';
 import { faThumbsUp as solidfaThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { faThumbsUp as regularfaThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
