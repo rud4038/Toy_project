@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import backend.backend.projects.dto.FindIdDto;
 import backend.backend.projects.dto.FindPasswordDto;
 import backend.backend.projects.dto.MemberDto;
-import backend.backend.projects.dto.MemberResponsDto;
+import backend.backend.projects.dto.ResponsDto;
 import backend.backend.projects.service.MemberService;
 
 @RestController
@@ -22,18 +22,18 @@ public class MemberContriller {
 	@Autowired MemberService memberService;
 
 	@PostMapping("/SignUp")
-	public MemberResponsDto SignUp(@RequestBody MemberDto memberDto) {
+	public ResponsDto SignUp(@RequestBody MemberDto memberDto) {
 		System.out.println(memberDto.getId());
 		return memberService.SignUP(memberDto);
 	}
 	
 	@PostMapping("/FindId")
-	public MemberResponsDto FindId(@RequestBody FindIdDto findIdDto) {
+	public ResponsDto FindId(@RequestBody FindIdDto findIdDto) {
 		return memberService.FindId(findIdDto);
 	}
 	
 	@PostMapping("/FindPassword")
-	public MemberResponsDto FindPassword(@RequestBody FindPasswordDto findPasswordDto) {
+	public ResponsDto FindPassword(@RequestBody FindPasswordDto findPasswordDto) {
 		return memberService.FindPassword(findPasswordDto);
 	}
 }

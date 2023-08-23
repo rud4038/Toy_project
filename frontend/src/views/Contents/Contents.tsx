@@ -9,6 +9,8 @@ function Contents() {
     const [img,SetImg] = useState<any>(null);
     const [imgResult, SetImgResult] = useState<any>('');
     const quillRef = useRef<any>(null);
+    const [imgname, SetImgname] = useState<any>('null');
+    Quill.register('modules/imageResize', ImageResize)
 
     const imageHendler = () => {
         const input = document.createElement('input');
@@ -27,13 +29,11 @@ function Contents() {
                       },
             })
             console.log(result.data);
-            const IMG_URL = await axios.get(`http://localhost:4040/file/${result.data}`);
-            console.log(IMG_URL.data.url);
             const editor = quillRef.current.getEditor();
             console.log(editor);
             const range = editor.getSelection();
             console.log(range);
-            editor.insertEmbed(range.index, 'image', IMG_URL.data);
+            editor.insertEmbed(range.index, 'image', 'http://localhost:4040/file/' + result.data);
             } catch (error) {
                 console.log('실패');
                 console.log(error);
@@ -59,7 +59,11 @@ function Contents() {
                 handlers : {
                     image: imageHendler
                 }
-            }
+            },
+            imageResize: {
+                parchment: Quill.import("parchment"),
+                modules: ["Resize", "DisplaySize"]
+              }
         }
     },[])
 
