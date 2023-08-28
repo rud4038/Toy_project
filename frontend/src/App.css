@@ -9,9 +9,6 @@
 a {
 
 }
-.App {
-  text-align: center;
-}
 
 .App-logo {
   height: 40vmin;
@@ -38,7 +35,12 @@ a {
 .App-link {
   color: #61dafb;
 }
-
+.ql-align-center{
+  text-align: center;
+}
+.ql-align-right{
+  text-align: right;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

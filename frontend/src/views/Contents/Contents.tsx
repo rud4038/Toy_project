@@ -33,7 +33,7 @@ function Contents() {
             console.log(editor);
             const range = editor.getSelection();
             console.log(range);
-            editor.insertEmbed(range.index, 'image', 'http://localhost:4040/file/' + result.data);
+            editor.insertEmbed(range.index, 'image', 'http://localhost:4040/file/' + result.data + '');
             } catch (error) {
                 console.log('실패');
                 console.log(error);
