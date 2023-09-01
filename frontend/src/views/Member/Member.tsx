@@ -40,7 +40,7 @@ function Member() {
                 <input type="password" className='Member-password click' placeholder='비밀번호를 다시 한번 입력하세요'onChange={(e) => setPassword2(e.target.value)}/>
                 <button className='Member-btn' onClick={() => inputCheck()}>회원가입</button>
                 <div className='Member-info-box'>
-                    <Link to={'/Login'}><div className='Member-info active'>로그인</div></Link>
+                    <Link to={'/Login'}><div className='Login-info active'>로그인</div></Link>
                     <Link to={'/Findid'}><div className='Login-info active'>아이디찾기</div></Link>
                     <Link to={'/Findpassword'}><div className='Login-info'>비밀번호찾기</div></Link>
                 </div>

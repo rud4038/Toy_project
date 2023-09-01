@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Header.css';
 import { Link } from 'react-router-dom';
+import { memberStore } from '../../stores';
 
 function Header() {
+    const {member, removeMember} = memberStore();
+
+    useEffect(() => {
+        console.log(member);
+    })
     return (
         <div className='Header'>
             <header className='nav-box'>
@@ -10,7 +16,11 @@ function Header() {
                     <Link to={'/'} className='main-btn'>cook</Link>
                 </div>
                 <div className='nav-right'>
-                    <Link to={'/Login'}>Login</Link>
+                    {
+                        (member === null) ? (<><Link to={'/Login'}>Login</Link></>) 
+                        : 
+                        (<><div>{member.id + "님"}</div></>)
+                    }
                     <Link to={'/Contents'}>글 작성</Link>
                 </div>
             </header>

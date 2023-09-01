@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import backend.backend.projects.dto.FindIdDto;
 import backend.backend.projects.dto.FindPasswordDto;
+import backend.backend.projects.dto.LogInResponseDto;
+import backend.backend.projects.dto.LoginDto;
 import backend.backend.projects.dto.MemberDto;
 import backend.backend.projects.dto.ResponsDto;
 import backend.backend.projects.service.MemberService;
@@ -22,18 +24,23 @@ public class MemberContriller {
 	@Autowired MemberService memberService;
 
 	@PostMapping("/SignUp")
-	public ResponsDto SignUp(@RequestBody MemberDto memberDto) {
+	public ResponsDto<String> SignUp(@RequestBody MemberDto memberDto) {
 		System.out.println(memberDto.getId());
 		return memberService.SignUP(memberDto);
 	}
 	
 	@PostMapping("/FindId")
-	public ResponsDto FindId(@RequestBody FindIdDto findIdDto) {
+	public ResponsDto<String> FindId(@RequestBody FindIdDto findIdDto) {
 		return memberService.FindId(findIdDto);
 	}
 	
 	@PostMapping("/FindPassword")
-	public ResponsDto FindPassword(@RequestBody FindPasswordDto findPasswordDto) {
+	public ResponsDto<String> FindPassword(@RequestBody FindPasswordDto findPasswordDto) {
 		return memberService.FindPassword(findPasswordDto);
+	}
+	
+	@PostMapping("/LogIn")
+	public ResponsDto<LogInResponseDto> LogIn(@RequestBody LoginDto loginDto) {
+		return memberService.LogIn(loginDto);
 	}
 }
