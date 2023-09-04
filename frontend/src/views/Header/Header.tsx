@@ -19,7 +19,7 @@ function Header() {
                     {
                         (member === null) ? (<><Link to={'/Login'}>Login</Link></>) 
                         : 
-                        (<><div>{member.id + "님"}</div></>)
+                        (<><div>{member.nickname + "님"}</div></>)
                     }
                     <Link to={'/Contents'}>글 작성</Link>
                 </div>

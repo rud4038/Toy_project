@@ -2,15 +2,26 @@ import './Contents.css';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css'
 import {ImageResize} from 'quill-image-resize-module-ts';
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import axios from 'axios';
+import Member from '../Member/Member';
+import { memberStore } from '../../stores';
 function Contents() {
+    const [title, SetTitle] = useState<any>('');
     const [value,SetValue] = useState<any>('');
+    const [mainimg,SetMainimg] = useState<any>('');
     const [img,SetImg] = useState<any>(null);
     const [imgResult, SetImgResult] = useState<any>('');
-    const quillRef = useRef<any>(null);
     const [imgname, SetImgname] = useState<any>('null');
+    const [nickname, SetNickname] = useState<any>('');
+    const {member} = memberStore();
+    const quillRef = useRef<any>(null);
     Quill.register('modules/imageResize', ImageResize)
+
+
+    useEffect(() => {
+        SetNickname(member.nickname);
+    })
 
     const imageHendler = () => {
         const input = document.createElement('input');
@@ -29,6 +40,9 @@ function Contents() {
                       },
             })
             console.log(result.data);
+            if(mainimg === ''){
+                SetMainimg(result.data);
+            }
             const editor = quillRef.current.getEditor();
             console.log(editor);
             const range = editor.getSelection();
@@ -40,7 +54,18 @@ function Contents() {
             }
 
         })
-
+        
+    }
+    
+    const uploadPost = ()=>{
+        const data = {
+            title,
+            value,
+            mainimg,
+            nickname
+        }
+        const response = axios.post('http://localhost:4040/contents/UploadPost', data);
+        console.log(response);
     }
 
     const modules = useMemo(() => {
@@ -67,15 +92,12 @@ function Contents() {
         }
     },[])
 
-    const test = ()=>{
-        console.log(value);
-    }
 
     return (
         <div>
             <div className='con-main-box'>
                 <div className='con-title-box'>
-                    <textarea className='con-title' placeholder='제목을 입력하세요.'></textarea>
+                    <textarea className='con-title' placeholder='제목을 입력하세요.' onChange={(e) => SetTitle(e.target.value)}></textarea>
                 </div>
                 <ReactQuill 
                     ref={quillRef}
@@ -85,7 +107,7 @@ function Contents() {
                     modules={modules}
                 />
                 <div className='con-btn-box'>
-                    <button className='save-btn' onClick={() => test()}>저장</button>
+                    <button className='save-btn' onClick={() => uploadPost()}>저장</button>
                 </div>
             </div>
         </div>
