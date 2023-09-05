@@ -22,4 +22,5 @@ public class ContentsEntity {
 	private String contents_mainimg;
 	private String contents_nickname;
 	private int contents_recommendation;
+	private String contents_date;
 }

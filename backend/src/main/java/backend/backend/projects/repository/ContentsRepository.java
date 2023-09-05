@@ -7,5 +7,6 @@ import backend.backend.projects.entity.ContentsEntity;
 
 @Repository
 public interface ContentsRepository extends JpaRepository<ContentsEntity, Integer> {
+	public ContentsEntity findById(int contents_number);
 
 }
