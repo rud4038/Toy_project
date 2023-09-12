@@ -25,7 +25,6 @@ public class ContentsController {
 	
 	@PostMapping("UploadPost")
 	public ResponsDto<String> UploadPost (@RequestBody UploadPostDto uploadPostDto) {
-		System.out.println(uploadPostDto.toString());
 		return contentsService.UploadPost(uploadPostDto);
 	}
 	

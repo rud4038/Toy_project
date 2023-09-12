@@ -23,13 +23,11 @@ public class FileController {
 	
 	@GetMapping(value = "{imageName}", produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE})
 	public Resource getImag(@PathVariable("imageName") String imagName) {
-		System.out.println(imagName);
 		return fileService.getImage(imagName);
 	}
 	
 	@PostMapping("upload")
 	public String fileUpload(@RequestParam("file") MultipartFile file) {
-		System.out.println("hi");
 		return fileService.fileUpload(file);
 	}
 }
