@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import backend.backend.projects.dto.ResponsDto;
+import backend.backend.projects.dto.UpdateCommentDto;
 import backend.backend.projects.dto.UploadCommentDto;
 import backend.backend.projects.entity.CommentEntity;
 import backend.backend.projects.repository.CommentRepository;
@@ -42,6 +43,29 @@ public class CommentService {
 			List<CommentEntity> commentList = commentRepository.findByContentsNumber(contentsNumber);
 			
 			return ResponsDto.setSucces(commentList, "댓글 불러오기");
+		} catch (Exception e) {
+			return ResponsDto.setFailed("데이터베이스 오류: " + e);
+		}
+	}
+	
+	public ResponsDto<String> UpdateComment(UpdateCommentDto commentDto) {
+		try {
+			CommentEntity commentEntity = commentRepository.findById(commentDto.getComment_number()).get();
+			commentEntity.setCommentCon(commentDto.getComment_con());
+			
+			commentRepository.save(commentEntity);
+			
+			return ResponsDto.setSucces(null, "댓글 수정 완료");
+		} catch (Exception e) {
+			return ResponsDto.setFailed("데이터베이스 오류: " + e);
+		}
+	}
+	
+	public ResponsDto<String> DeleteComment(int comment_number) {
+		try {
+			commentRepository.deleteById(comment_number);
+			
+			return ResponsDto.setSucces(null, "댓글 삭제 완료");
 		} catch (Exception e) {
 			return ResponsDto.setFailed("데이터베이스 오류: " + e);
 		}
