@@ -12,7 +12,7 @@ function Login() {
 
     const {setMember} = memberStore();
 
-    const LoginHandler = () => {
+    const LoginHandler = async () => {
         if(id.length === 0 || password.length === 0){
             alert('아이디, 비밀번호를 입력하세요')
             return
@@ -21,7 +21,7 @@ function Login() {
             id,
             password
         }
-        axios.post('http://localhost:4040/member/LogIn',data)
+        await axios.post('http://localhost:4040/member/LogIn',data)
         .then((response) => {
             const responseData = response.data;
             
