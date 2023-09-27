@@ -30,6 +30,7 @@
 .contents-img{
     height: 150px;
     width: 100%;
+    cursor: pointer;
 }
 .contents-detail {
     display: flex;
@@ -45,14 +46,37 @@
     font-size: 12px;
 }
 
-.info-btn {
-    position: absolute;
-    border: 0px;
-    right: 15px;
-    bottom: 15px;
-    font-size: 26px;
-}
+
 .info-btn:hover{
     cursor: pointer;
+}
+
+
+.info-box2 {
+    display: flex;
+    justify-content: space-between;
+    
+}
+
+.views-box {
+    display: flex;
+    font-size: 12px;
+}
+
+.views-count {
+    margin-left: 5px;
+}
+
+.recommendation-box {
+    display: flex;
+}
+
+.recommendation-btn {
+    cursor: pointer;
+}
+
+.recommendation-count {
+    margin-left: 5px;
+    font-size: 12px;
 }
 

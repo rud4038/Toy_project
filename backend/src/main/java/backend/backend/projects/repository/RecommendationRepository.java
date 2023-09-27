@@ -15,6 +15,7 @@ public interface RecommendationRepository extends JpaRepository<RecommendationEn
 	public boolean existsByNickname(String nickname);
 	@Query("SELECT r.contentsNumber  FROM recommendation r WHERE r.nickname = ?1")
 	public List<Integer> findAllByNickname(String nickname);
+	public RecommendationEntity findByContentsNumberAndNickname(int contentsNumber, String nickname);
 
 }
 

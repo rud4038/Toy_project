@@ -38,4 +38,19 @@ public class ContentsController {
 		return contentsService.LoadPage(contents_number);
 	}
 	
+	@GetMapping("ViewsCount/{contents_number}")
+	public ResponsDto<String> ViewsCount(@PathVariable("contents_number") int contets_number){
+		return contentsService.ViewsCount(contets_number);
+	}
+	
+	@GetMapping("RecommendationCountUp/{contents_number}")
+	public ResponsDto<String> RecommendationCountUp(@PathVariable("contents_number") int contents_number){
+		return contentsService.RecommendationCountUp(contents_number);
+	}
+	
+	@GetMapping("RecommendationCountDown/{contents_number}")
+	public ResponsDto<String> RecommendationCountDown(@PathVariable("contents_number") int contents_number){
+		return contentsService.RecommendationCountDown(contents_number);
+	}
+	
 }

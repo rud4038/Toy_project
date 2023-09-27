@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Login.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {useCookies} from 'react-cookie';
 import { memberStore } from '../../stores';
@@ -9,6 +9,8 @@ function Login() {
     const[id,SetId] = useState<string>('');
     const[password,SetPassword] = useState<string>('');
     const[cookie, SetCookies] = useCookies();
+
+    const navigator = useNavigate();
 
     const {setMember} = memberStore();
 
@@ -39,6 +41,7 @@ function Login() {
             SetCookies('token', token, { expires });
             setMember(member);
             console.log(member);
+            navigator('/');
         })
     }
     return (
@@ -47,7 +50,7 @@ function Login() {
             <div className='Login-box'>
                 <input type="text" className='Login-id click' placeholder='아이디를 입력하세요' onChange={(e) => SetId(e.target.value)}/>
                 <input type="password" className='Login-password click' placeholder='비밀번호를 입력하세요' onChange={(e) => SetPassword(e.target.value)}/>
-                <Link to={'/'}><button className='Login-btn' onClick={() => LoginHandler()}>로그인</button></Link>
+                <button className='Login-btn' onClick={() => LoginHandler()}>로그인</button>
                 <div className='Login-info-box'>
                     <Link to={'/Member'}><div className='Login-info active'>회원가입</div></Link>
                     <Link to={'/Findid'}><div className='Login-info active'>아이디찾기</div></Link>

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import backend.backend.projects.dto.RecommendationDeleteDto;
 import backend.backend.projects.dto.RecommendationResponseDto;
 import backend.backend.projects.dto.RecommendationUploadDto;
 import backend.backend.projects.dto.ResponsDto;
@@ -36,13 +37,22 @@ public class RecommendationService {
 	
 	public ResponsDto<List<Integer>> RecommendationListLoad(String nickname) {
 		try {
-			System.out.println("hi");
 			if(!recommendationRepository.existsByNickname(nickname)) {
 				return ResponsDto.setFailed("추천 목록 없음");
 			}
-			System.out.println("hi2");
 			List<Integer> recommendationList =  recommendationRepository.findAllByNickname(nickname);
 			return ResponsDto.setSucces(recommendationList, "추천 목록");
+		} catch (Exception e) {
+			return ResponsDto.setFailed("데이터베이스 오류: " + e);
+		}
+	}
+	
+	public ResponsDto<String> RecommendationDelete(RecommendationDeleteDto deleteDto) {
+		try {
+			RecommendationEntity recommendationEntity = recommendationRepository.findByContentsNumberAndNickname(deleteDto.getContents_number(), deleteDto.getNickname());
+			recommendationRepository.deleteById(recommendationEntity.getRecommendationNumber());
+			
+			return ResponsDto.setSucces(null, "추천 취소");
 		} catch (Exception e) {
 			return ResponsDto.setFailed("데이터베이스 오류: " + e);
 		}
