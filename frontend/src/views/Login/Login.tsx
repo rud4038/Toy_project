@@ -4,11 +4,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {useCookies} from 'react-cookie';
 import { memberStore } from '../../stores';
+import categoryNumberStore from '../../stores/categorynumber.store';
 
 function Login() {
     const[id,SetId] = useState<string>('');
     const[password,SetPassword] = useState<string>('');
     const[cookie, SetCookies] = useCookies();
+    const{ setcategoryNumber } = categoryNumberStore();
 
     const navigator = useNavigate();
 
@@ -41,6 +43,7 @@ function Login() {
             SetCookies('token', token, { expires });
             setMember(member);
             console.log(member);
+            setcategoryNumber(0);
             navigator('/');
         })
     }

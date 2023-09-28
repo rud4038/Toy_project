@@ -1,3 +1,4 @@
+import { FormControl, InputLabel, MenuItem, Pagination, Select, SelectChangeEvent, Tab, Box, Tabs } from "@mui/material";
 import React, { useEffect, useState } from 'react';
 import './Main.css'
 import cookImg from '../../assest/imgs/books.jpg';
@@ -8,22 +9,53 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import loadPageStore from '../../stores/loadpage.store';
 import { memberStore } from '../../stores';
+import categoryNumberStore from "../../stores/categorynumber.store";
 
 function Main() {
 
     const [variables, SetVariables] = useState<any[]>([]);
+    const [value, setValue] = React.useState(0);
     const [rcList, SetRcList] = useState<number[]>([]);
     const { setContents_number } = loadPageStore();
     const { member } = memberStore();
+    const { categoryNumber, setcategoryNumber } = categoryNumberStore();
     const navigator = useNavigate();
 
-    const requestToServer = async () => {
-        await axios.get('http://localhost:4040/contents/LoadPostList')
-        .then((response) => {
-            console.log(response.data.data);
-            SetVariables(response.data.data);
-        })
-        console.log(variables);
+    const requestToServer = async (number : number) => {
+        if(number === 0){
+            await axios.get('http://localhost:4040/contents/LoadPostList')
+            .then((response) => {
+                console.log(response.data.data);
+                SetVariables(response.data.data);
+            })
+            console.log(variables);
+        }else if(number === 1){
+            await axios.get('http://localhost:4040/contents/LoadPostListViews')
+            .then((response) => {
+                console.log(response.data.data);
+                SetVariables(response.data.data);
+            })
+            console.log(variables);
+        }else if(number === 2){
+            await axios.get('http://localhost:4040/contents/LoadPostListRecommendation')
+            .then((response) => {
+                console.log(response.data.data);
+                SetVariables(response.data.data);
+            })
+            console.log(variables);
+        }else if(number === 3){
+            if(member === null){
+                return alert('로그인 후 이용 할 수 있습니다.')
+            }else{
+                const nickname = member.nickname;
+                await axios.get(`http://localhost:4040/contents/LoadPostListMyRecommendation/${nickname}`)
+                .then((response) => {
+                    console.log(response.data.data);
+                    SetVariables(response.data.data);
+                })
+                console.log(variables);
+            }
+        }
         if(member != null){
             recommendationListLoad();
         }
@@ -84,24 +116,40 @@ function Main() {
         }
 
         await axios.get(`http://localhost:4040/contents/RecommendationCountUp/${contents_number}`);
-        requestToServer();
+        requestToServer(categoryNumber);
         recommendationListLoad();
     }
 
     const RecommendationCountDown = async (contents_number : any) => {
         await axios.get(`http://localhost:4040/contents/RecommendationCountDown/${contents_number}`);
-        requestToServer();
+        requestToServer(categoryNumber);
         recommendationListLoad();
     }
 
+    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+        console.log(newValue);
+        setcategoryNumber(newValue);
+        requestToServer(newValue);
+        setValue(newValue);
+      };
+
+
     useEffect(() => {
-        requestToServer();
-        
+        requestToServer(categoryNumber);
+        setValue(categoryNumber);
         console.log(variables);
     },[])   
 
     return (
         <div className='main'>
+                <Box className="navigate-box" >
+                    <Tabs value={value} onChange={handleChange} centered className="" TabIndicatorProps={{style : {background : 'none'}}}>
+                        <Tab label="메인"  className="navi" sx={{fontSize : '20px', fontWeight : 'bold'}} />
+                        <Tab label="조회수순" className="navi"sx={{fontSize : '20px', fontWeight : 'bold'}} />
+                        <Tab label="추천순" className="navi" sx={{fontSize : '20px', fontWeight : 'bold'}}/>
+                        <Tab label="나의 추천목록" className="navi" sx={{fontSize : '20px', fontWeight : 'bold'}}/>
+                    </Tabs>
+                </Box>
             <div className='main-box'>
                 {variables.map((item : any) => (
                     <div className='contents-box'>
@@ -128,138 +176,6 @@ function Main() {
                         </div>
                     </div>
                 ))}
-                <div className='contents-box'>
-                    <div className='contents-img-box'>
-                        <FontAwesomeIcon icon={regularfaThumbsUp}  className='info-btn' />
-                        <img src={cookImg} alt=""  className='contents-img'/>
-                    </div>
-                    <p className='contents-title'>title</p>
-                    <p className='contents-detail'>내용~~~~~~~~~~~~</p>
-                    <div className='info-box'>
-                        <p className='contents-nick'>nickname</p>
-                        <p className='date'>2023-01-07</p>
-                    </div>
-                </div>
-                <div className='contents-box'>
-                    <div className='contents-img-box'>
-                        <FontAwesomeIcon icon={regularfaThumbsUp}  className='info-btn'/>
-                        <img src={cookImg} alt=""  className='contents-img'/>
-                    </div>
-                    <p className='contents-title'>title</p>
-                    <p className='contents-detail'>내용~~~~~~~~~~~~</p>
-                    <div className='info-box'>
-                        <p className='contents-nick'>nickname</p>
-                        <p className='date'>2023-01-07</p>
-                    </div>
-                </div>
-                <div className='contents-box'>
-                    <div className='contents-img-box'>
-                        <FontAwesomeIcon icon={regularfaThumbsUp}  className='info-btn'/>
-                        <img src={cookImg} alt=""  className='contents-img'/>
-                    </div>
-                    <p className='contents-title'>title</p>
-                    <p className='contents-detail'>내용~~~~~~~~~~~~</p>
-                    <div className='info-box'>
-                        <p className='contents-nick'>nickname</p>
-                        <p className='date'>2023-01-07</p>
-                    </div>
-                </div>
-                <div className='contents-box'>
-                    <div className='contents-img-box'>
-                        <FontAwesomeIcon icon={regularfaThumbsUp}  className='info-btn'/>
-                        <img src={cookImg} alt=""  className='contents-img'/>
-                    </div>
-                    <p className='contents-title'>title</p>
-                    <p className='contents-detail'>내용~~~~~~~~~~~~</p>
-                    <div className='info-box'>
-                        <p className='contents-nick'>nickname</p>
-                        <p className='date'>2023-01-07</p>
-                    </div>
-                </div>
-                <div className='contents-box'>
-                    <div className='contents-img-box'>
-                        <FontAwesomeIcon icon={regularfaThumbsUp}  className='info-btn'/>
-                        <img src={cookImg} alt=""  className='contents-img'/>
-                    </div>
-                    <p className='contents-title'>title</p>
-                    <p className='contents-detail'>내용~~~~~~~~~~~~</p>
-                    <div className='info-box'>
-                        <p className='contents-nick'>nickname</p>
-                        <p className='date'>2023-01-07</p>
-                    </div>
-                </div>
-                <div className='contents-box'>
-                    <div className='contents-img-box'>
-                        <FontAwesomeIcon icon={regularfaThumbsUp}  className='info-btn'/>
-                        <img src={cookImg} alt=""  className='contents-img'/>
-                    </div>
-                    <p className='contents-title'>title</p>
-                    <p className='contents-detail'>내용~~~~~~~~~~~~</p>
-                    <div className='info-box'>
-                        <p className='contents-nick'>nickname</p>
-                        <p className='date'>2023-01-07</p>
-                    </div>
-                </div>
-                <div className='contents-box'>
-                    <div className='contents-img-box'>
-                        <FontAwesomeIcon icon={regularfaThumbsUp}  className='info-btn'/>
-                        <img src={cookImg} alt=""  className='contents-img'/>
-                    </div>
-                    <p className='contents-title'>title</p>
-                    <p className='contents-detail'>내용~~~~~~~~~~~~</p>
-                    <div className='info-box'>
-                        <p className='contents-nick'>nickname</p>
-                        <p className='date'>2023-01-07</p>
-                    </div>
-                </div>
-                <div className='contents-box'>
-                    <div className='contents-img-box'>
-                        <FontAwesomeIcon icon={regularfaThumbsUp}  className='info-btn'/>
-                        <img src={cookImg} alt=""  className='contents-img'/>
-                    </div>
-                    <p className='contents-title'>title</p>
-                    <p className='contents-detail'>내용~~~~~~~~~~~~</p>
-                    <div className='info-box'>
-                        <p className='contents-nick'>nickname</p>
-                        <p className='date'>2023-01-07</p>
-                    </div>
-                </div>
-                <div className='contents-box'>
-                    <div className='contents-img-box'>
-                        <FontAwesomeIcon icon={regularfaThumbsUp}  className='info-btn'/>
-                        <img src={cookImg} alt=""  className='contents-img'/>
-                    </div>
-                    <p className='contents-title'>title</p>
-                    <p className='contents-detail'>내용~~~~~~~~~~~~</p>
-                    <div className='info-box'>
-                        <p className='contents-nick'>nickname</p>
-                        <p className='date'>2023-01-07</p>
-                    </div>
-                </div>
-                <div className='contents-box'>
-                    <div className='contents-img-box'>
-                        <FontAwesomeIcon icon={regularfaThumbsUp}  className='info-btn'/>
-                        <img src={cookImg} alt=""  className='contents-img'/>
-                    </div>
-                    <p className='contents-title'>title</p>
-                    <p className='contents-detail'>내용~~~~~~~~~~~~</p>
-                    <div className='info-box'>
-                        <p className='contents-nick'>nickname</p>
-                        <p className='date'>2023-01-07</p>
-                    </div>
-                </div>
-                <div className='contents-box'>
-                    <div className='contents-img-box'>
-                        <FontAwesomeIcon icon={regularfaThumbsUp}  className='info-btn'/>
-                        <img src={cookImg} alt=""  className='contents-img'/>
-                    </div>
-                    <p className='contents-title'>title</p>
-                    <p className='contents-detail'>내용~~~~~~~~~~~~</p>
-                    <div className='info-box'>
-                        <p className='contents-nick'>nickname</p>
-                        <p className='date'>2023-01-07</p>
-                    </div>
-                </div>
             </div>
         </div>
     );

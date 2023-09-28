@@ -12,6 +12,7 @@
     border: 0;
     background-color: white;
     font-size: 18px;
+    cursor: pointer;
 }
 .nav-right {
     width: 400px;

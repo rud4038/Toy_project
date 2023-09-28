@@ -33,6 +33,21 @@ public class ContentsController {
 		return contentsService.LoadPostList();
 	}
 	
+	@GetMapping("LoadPostListViews")
+	public ResponsDto<List<ContentsEntity>> LoadPostListViews () {
+		return contentsService.LoadPostListViews();
+	}
+	
+	@GetMapping("LoadPostListRecommendation")
+	public ResponsDto<List<ContentsEntity>> LoadPostListRecommendation () {
+		return contentsService.LoadPostListRecommendation();
+	}
+	
+	@GetMapping("LoadPostListMyRecommendation/{nickname}")
+	public ResponsDto<List<ContentsEntity>> LoadPostListMyRecommendation (@PathVariable("nickname") String nickname) {
+		return contentsService.LoadPostListMyRecommendation(nickname);
+	}
+	
 	@GetMapping("LoadPage/{contents_number}")
 	public ResponsDto<ContentsEntity> LoadPage(@PathVariable("contents_number") int contents_number) {
 		return contentsService.LoadPage(contents_number);
