@@ -9,6 +9,7 @@ import Findid from './views/FindId/Findid';
 import Findpassword from './views/Findpassword/Findpassword';
 import Contents from './views/Contents/Contents';
 import ViewContents from './views/ViewContents/ViewContents';
+import MemberUpdate from './views/MemberUpdate/MemberUpdate';
 function App() {
   return (
     <div className="App">
@@ -22,6 +23,7 @@ function App() {
           <Route path='Findpassword' element = {<Findpassword />} />
           <Route path='Contents' element = {<Contents />} />
           <Route path='ViewContents' element = {<ViewContents/>} />
+          <Route path='MemberUpdate' element = {<MemberUpdate/>} />
         </Routes>
       </BrowserRouter>
     </div>

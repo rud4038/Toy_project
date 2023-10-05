@@ -67,10 +67,26 @@
     color: #999999;
     line-height: 24px;
 }
+.comment-float {
+    font-size: 14px;
+    color: #999999;
+    margin: 0 5px 0 5px;
+}
+.comment-btn {
+    font-size: 14px;
+    line-height: 23px;
+    color: #999999;
+    cursor: pointer;
+}
 .comment-contents-con{
     font-size: 14px;
     width: 100%;
     padding-bottom: 20px;
     border-bottom: 1px solid #e6e7e8;
     white-space: pre;
+}
+.comment-update-box {
+    width: 1047px;
+    height: 100px;
+    resize: none;
 }

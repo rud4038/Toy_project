@@ -16,6 +16,11 @@ function Main() {
     const [variables, SetVariables] = useState<any[]>([]);
     const [value, setValue] = React.useState(0);
     const [rcList, SetRcList] = useState<number[]>([]);
+    const [pageSize, setPageSize] = useState<number>(1);
+    const [page, setPage] = useState<number>(1);
+    const [viewItems, setViewItems] = useState<any[]>([]);
+    const [inputs, setInputs] = useState<string>('');
+    const [type, setType] = useState<string>('');
     const { setContents_number } = loadPageStore();
     const { member } = memberStore();
     const { categoryNumber, setcategoryNumber } = categoryNumberStore();
@@ -24,23 +29,26 @@ function Main() {
     const requestToServer = async (number : number) => {
         if(number === 0){
             await axios.get('http://localhost:4040/contents/LoadPostList')
-            .then((response) => {
+            .then(async (response) => {
                 console.log(response.data.data);
                 SetVariables(response.data.data);
+                await PageHandler(response.data.data);
             })
             console.log(variables);
         }else if(number === 1){
             await axios.get('http://localhost:4040/contents/LoadPostListViews')
-            .then((response) => {
+            .then(async (response) => {
                 console.log(response.data.data);
                 SetVariables(response.data.data);
+                await PageHandler(response.data.data);
             })
             console.log(variables);
         }else if(number === 2){
             await axios.get('http://localhost:4040/contents/LoadPostListRecommendation')
-            .then((response) => {
+            .then(async (response) => {
                 console.log(response.data.data);
                 SetVariables(response.data.data);
+                await PageHandler(response.data.data);
             })
             console.log(variables);
         }else if(number === 3){
@@ -49,16 +57,27 @@ function Main() {
             }else{
                 const nickname = member.nickname;
                 await axios.get(`http://localhost:4040/contents/LoadPostListMyRecommendation/${nickname}`)
-                .then((response) => {
+                .then(async (response) => {
                     console.log(response.data.data);
                     SetVariables(response.data.data);
+                    await PageHandler(response.data.data);
                 })
                 console.log(variables);
             }
         }
+        setPage(1);
         if(member != null){
             recommendationListLoad();
         }
+    }
+    const PageHandler = (list : any[]) => {
+        setPageSize(Math.ceil(list.length / 16));
+        const tmp = [];
+
+        for(let i = 0; i < 16; i++){
+            if(i < list.length) tmp.push(list[i]);
+        }
+        setViewItems(tmp);
     }
 
     const recommendationUpload = async (contents_number : any) => {
@@ -127,11 +146,56 @@ function Main() {
     }
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-        console.log(newValue);
         setcategoryNumber(newValue);
         requestToServer(newValue);
         setValue(newValue);
       };
+
+      const handleChange2 = (event: React.ChangeEvent<unknown>, value: number) => {
+        const tmp = [];
+        for (let i = 16 * (value - 1); i < value * 16; i++) {
+          if (i < variables.length) tmp.push(variables[i]);
+        }
+        setViewItems(tmp);
+        setPage(value);
+      };
+      const handleChange3 = (event: SelectChangeEvent) => {
+        setType(event.target.value);
+      };
+
+      const select = () => {
+
+        if(type === "제목"){
+    
+          const list = variables.filter((item : any) => item.contents_title === inputs) 
+          console.log(list);
+          if(list.length === 0){
+            alert('동일한 내용이 없습니다.')
+            setcategoryNumber(0);
+            requestToServer(0);
+            return;
+          }
+          setPageSize(Math.ceil(list.length / 16));
+          const tmp = [];
+          for (let i = 0; i < 16; i++) {
+            if (i < list.length) tmp.push(list[i]);
+          }
+          setViewItems(tmp);
+          return
+    
+        }
+    
+          const list = variables.filter((item : any) => item.contents_nickname === inputs)
+          console.log(inputs);
+          setPageSize(Math.ceil(list.length / 16));
+          const tmp2 = [];
+          for (let i = 0; i < 16; i++) {
+            if (i < list.length) tmp2.push(list[i]);
+          }
+          setViewItems(tmp2);
+          return
+    
+      }
 
 
     useEffect(() => {
@@ -151,7 +215,7 @@ function Main() {
                     </Tabs>
                 </Box>
             <div className='main-box'>
-                {variables.map((item : any) => (
+                {viewItems.map((item : any) => (
                     <div className='contents-box'>
                         <div className='contents-img-box'>
                             <img src={"http://localhost:4040/file/"+ item.contents_mainimg} alt=""  className='contents-img' onClick={() => LoadContents(item.contents_number)}/>
@@ -176,6 +240,28 @@ function Main() {
                         </div>
                     </div>
                 ))}
+                <div className="pagingcount">
+                    <Pagination
+                        count={pageSize}
+                        page={page}
+                        shape="rounded"
+                        onChange={handleChange2}
+                    />
+                </div>
+                <div className="selected">
+                    <FormControl sx={{ m: 1, minWidth : 120}} size="small">
+                        <InputLabel>검색목록</InputLabel>
+                        <Select
+                        value={type}
+                        label="검색목록"
+                        onChange={handleChange3}>
+                            <MenuItem value = {"제목"}>제목</MenuItem>
+                            <MenuItem value = {"닉네임"}>닉네임</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <input type="text"  className="select-box" onChange={(e) => setInputs(e.target.value)}/>
+                    <button className="select-btn" onClick={() => select()}>검색</button>
+                </div>
             </div>
         </div>
     );

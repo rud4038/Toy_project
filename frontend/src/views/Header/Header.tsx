@@ -28,7 +28,9 @@ function Header() {
                         (member === null) ? (<><Link to={'/Login'}>Login</Link></>) 
                         : 
                         (<><div>{member.nickname + "님"}</div>
-                        <Link to={'/Contents'}>글 작성</Link></>)
+                        <Link to={'/MemberUpdate'}>회원정보</Link>
+                        <Link to={'/Contents'}>글 작성</Link>
+                        </>)
                     }
                     
                 </div>
