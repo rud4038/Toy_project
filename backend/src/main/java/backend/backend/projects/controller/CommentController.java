@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import backend.backend.projects.dto.ResponsDto;
 import backend.backend.projects.dto.UpdateCommentDto;
+import backend.backend.projects.dto.UpdateNicknameDto;
 import backend.backend.projects.dto.UploadCommentDto;
 import backend.backend.projects.entity.CommentEntity;
 import backend.backend.projects.service.CommentService;
+import jakarta.transaction.Transactional;
 
 @RestController
 @RequestMapping("/comment")
@@ -39,6 +41,12 @@ public class CommentController {
 	public ResponsDto<String> UpdateComment(@RequestBody UpdateCommentDto commentDto) {
 		return commentService.UpdateComment(commentDto);
 		
+	}
+	
+	@Transactional
+	@PostMapping("updateNickname")
+	public ResponsDto<Integer> UpdateNickname(@RequestBody UpdateNicknameDto updateNicknameDto) {
+		return commentService.UpdateNickname(updateNicknameDto);
 	}
 	
 	@DeleteMapping("delete/{comment_number}")

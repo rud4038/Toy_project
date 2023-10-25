@@ -9,6 +9,7 @@ import backend.backend.projects.dto.RecommendationDeleteDto;
 import backend.backend.projects.dto.RecommendationResponseDto;
 import backend.backend.projects.dto.RecommendationUploadDto;
 import backend.backend.projects.dto.ResponsDto;
+import backend.backend.projects.dto.UpdateNicknameDto;
 import backend.backend.projects.entity.RecommendationEntity;
 import backend.backend.projects.repository.RecommendationRepository;
 
@@ -42,6 +43,16 @@ public class RecommendationService {
 			}
 			List<Integer> recommendationList =  recommendationRepository.findAllByNickname(nickname);
 			return ResponsDto.setSucces(recommendationList, "추천 목록");
+		} catch (Exception e) {
+			return ResponsDto.setFailed("데이터베이스 오류: " + e);
+		}
+	}
+	
+	public ResponsDto<Integer> UpdateNickname(UpdateNicknameDto nicknameDto) {
+		try {
+			int num = recommendationRepository.updateNickname(nicknameDto.getNewNickname(), nicknameDto.getOldNickname());
+			
+			return ResponsDto.setSucces(num, "닉네임 변경 완료");
 		} catch (Exception e) {
 			return ResponsDto.setFailed("데이터베이스 오류: " + e);
 		}

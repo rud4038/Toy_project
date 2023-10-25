@@ -10,7 +10,12 @@ import backend.backend.projects.dto.FindPasswordDto;
 import backend.backend.projects.dto.LogInResponseDto;
 import backend.backend.projects.dto.LoginDto;
 import backend.backend.projects.dto.MemberDto;
+import backend.backend.projects.dto.MemberInfoResponseDto;
 import backend.backend.projects.dto.ResponsDto;
+import backend.backend.projects.dto.UpdateNameDto;
+import backend.backend.projects.dto.UpdateNicknameDto;
+import backend.backend.projects.dto.UpdateNumberDto;
+import backend.backend.projects.dto.UpdatePasswordDto;
 import backend.backend.projects.entity.MemberEntity;
 import backend.backend.projects.repository.MemberRepository;
 import backend.backend.projects.security.TokenProvider;
@@ -120,6 +125,100 @@ public class MemberService {
 			LogInResponseDto logInResponseDto = new LogInResponseDto(token,exprTime,memberEntity);
 			return ResponsDto.setSucces(logInResponseDto, "로그인 성공");
 			
+		} catch (Exception e) {
+			return ResponsDto.setFailed("데이터 베이스 문제 발생: " + e);
+		}
+	}
+	
+	public ResponsDto<MemberInfoResponseDto> LoadInfo(String id) {
+		try {
+			MemberEntity memberEntity = memberRepository.findById(id).get();
+			MemberInfoResponseDto infoResponseDto = new MemberInfoResponseDto(memberEntity);
+			
+			return ResponsDto.setSucces(infoResponseDto, "회원 정보 불러오기");
+		} catch (Exception e) {
+			return ResponsDto.setFailed("데이터 베이스 문제 발생: " + e);
+		}
+	}
+	
+	public ResponsDto<String> UpdateName(UpdateNameDto nameDto) {
+		try {
+			MemberEntity memberEntity = memberRepository.findByName(nameDto.getOldName());
+			memberEntity.setName(nameDto.getNewName());
+			memberRepository.save(memberEntity);
+			
+			return ResponsDto.setSucces(null, "이름 변경 완료");
+		} catch (Exception e) {
+			return ResponsDto.setFailed("데이터 베이스 문제 발생: " + e);
+		}
+	}
+	
+	public ResponsDto<String> UpdateNickname(UpdateNicknameDto updateNicknameDto){
+		try {
+			boolean check = true;
+			check = memberRepository.existsByNickname(updateNicknameDto.getNewNickname());
+			
+			if(check) {
+				return ResponsDto.setFailed("변경하실 닉네임과 동일한 닉네임이 존재합니다.");
+			}
+			
+			MemberEntity memberEntity = memberRepository.findByNickname(updateNicknameDto.getOldNickname());
+			memberEntity.setNickname(updateNicknameDto.getNewNickname());
+			
+			memberRepository.save(memberEntity);
+			
+			return ResponsDto.setSucces(null, "닉네임 변경 완료");
+		} catch (Exception e) {
+			return ResponsDto.setFailed("데이터 베이스 문제 발생: " + e);
+		}
+	}
+	
+	public ResponsDto<String> UpdateNumber(UpdateNumberDto updateNumberDto){
+		try {
+			boolean check = true;
+			check = memberRepository.existsByNumber(updateNumberDto.getNewNumber());
+			
+			if(check) {
+				return ResponsDto.setFailed("변경하실 전화번호와 동일한 번호가 존재합니다.");
+			}
+			
+			MemberEntity memberEntity = memberRepository.findByNumber(updateNumberDto.getOldNumber());
+			memberEntity.setNumber(updateNumberDto.getNewNumber());
+			
+			memberRepository.save(memberEntity);
+			
+			return ResponsDto.setSucces(null, "전화번호 변경 완료");
+			
+		} catch (Exception e) {
+			return ResponsDto.setFailed("데이터 베이스 문제 발생: " + e);
+		}
+	}
+	
+	public ResponsDto<String> UpdatePassword(UpdatePasswordDto updatePasswordDto){
+		try {
+			boolean check = false;
+			check = memberRepository.existsByPassword(updatePasswordDto.getOldPassword());
+			
+			if(!check) {
+				return ResponsDto.setFailed("비밀번호를 잘못 입력하셨습니다.");
+			}
+			
+			MemberEntity memberEntity = memberRepository.findByPassword(updatePasswordDto.getOldPassword());
+			memberEntity.setPassword(updatePasswordDto.getNewPassword());
+			
+			memberRepository.save(memberEntity);
+			
+			return ResponsDto.setSucces(null, "비밀번호 변경 완료");
+			
+		} catch (Exception e) {
+			return ResponsDto.setFailed("데이터 베이스 문제 발생: " + e);
+		}
+	}
+	
+	public ResponsDto<String> DeleteMember(String id) {
+		try {
+			memberRepository.deleteById(id);
+			return ResponsDto.setSucces(null, "회원 탈퇴 완료");
 		} catch (Exception e) {
 			return ResponsDto.setFailed("데이터 베이스 문제 발생: " + e);
 		}

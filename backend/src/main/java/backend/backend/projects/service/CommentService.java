@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import backend.backend.projects.dto.ResponsDto;
 import backend.backend.projects.dto.UpdateCommentDto;
+import backend.backend.projects.dto.UpdateNicknameDto;
 import backend.backend.projects.dto.UploadCommentDto;
 import backend.backend.projects.entity.CommentEntity;
 import backend.backend.projects.repository.CommentRepository;
@@ -56,6 +57,16 @@ public class CommentService {
 			commentRepository.save(commentEntity);
 			
 			return ResponsDto.setSucces(null, "댓글 수정 완료");
+		} catch (Exception e) {
+			return ResponsDto.setFailed("데이터베이스 오류: " + e);
+		}
+	}
+	
+	public ResponsDto<Integer> UpdateNickname(UpdateNicknameDto nicknameDto) {
+		try {
+			int num = commentRepository.updateNickname(nicknameDto.getNewNickname(), nicknameDto.getOldNickname());
+			
+			return ResponsDto.setSucces(num, "닉네임 변경 완료");
 		} catch (Exception e) {
 			return ResponsDto.setFailed("데이터베이스 오류: " + e);
 		}

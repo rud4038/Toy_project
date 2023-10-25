@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import backend.backend.projects.dto.ResponsDto;
+import backend.backend.projects.dto.UpdateNicknameDto;
 import backend.backend.projects.dto.UploadPostDto;
 import backend.backend.projects.entity.ContentsEntity;
 import backend.backend.projects.service.ContentsService;
+import jakarta.transaction.Transactional;
 
 @CrossOrigin(originPatterns = "http://localhost:3000")
 @RestController
@@ -66,6 +68,12 @@ public class ContentsController {
 	@GetMapping("RecommendationCountDown/{contents_number}")
 	public ResponsDto<String> RecommendationCountDown(@PathVariable("contents_number") int contents_number){
 		return contentsService.RecommendationCountDown(contents_number);
+	}
+	
+	@Transactional
+	@PostMapping("UpdateNickname")
+	public ResponsDto<Integer> UpdateNickname(@RequestBody UpdateNicknameDto updateNicknameDto) {
+		return contentsService.UpdateNickname(updateNicknameDto);
 	}
 	
 }

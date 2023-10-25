@@ -16,7 +16,9 @@ import backend.backend.projects.dto.RecommendationDeleteDto;
 import backend.backend.projects.dto.RecommendationResponseDto;
 import backend.backend.projects.dto.RecommendationUploadDto;
 import backend.backend.projects.dto.ResponsDto;
+import backend.backend.projects.dto.UpdateNicknameDto;
 import backend.backend.projects.service.RecommendationService;
+import jakarta.transaction.Transactional;
 
 @RestController
 @RequestMapping("/recommendation")
@@ -33,6 +35,12 @@ public class RecommendationController {
 	@GetMapping("load/{nickname}")
 	public ResponsDto<List<Integer>> RecommendationListLoad(@PathVariable("nickname") String nickname) {
 		return recommendationService.RecommendationListLoad(nickname); 
+	}
+	
+	@Transactional
+	@PostMapping("updateNickname")
+	public ResponsDto<Integer> UpdateNickname(@RequestBody UpdateNicknameDto updateNicknameDto) {
+		return recommendationService.UpdateNickname(updateNicknameDto);
 	}
 	
 	@PostMapping("delete")

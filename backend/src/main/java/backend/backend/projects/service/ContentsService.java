@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import backend.backend.projects.dto.ResponsDto;
+import backend.backend.projects.dto.UpdateNicknameDto;
 import backend.backend.projects.dto.UploadPostDto;
 import backend.backend.projects.entity.ContentsEntity;
 import backend.backend.projects.repository.ContentsRepository;
@@ -156,6 +157,16 @@ public class ContentsService {
 			return ResponsDto.setSucces(null, "추천취소");
 		} catch (Exception e) {
 			return ResponsDto.setFailed("데이터베이스 오류 : " + e);
+		}
+	}
+	
+	public ResponsDto<Integer> UpdateNickname(UpdateNicknameDto nicknameDto) {
+		try {
+			int num = contentsRepository.updateNickname(nicknameDto.getNewNickname(), nicknameDto.getOldNickname());
+			
+			return ResponsDto.setSucces(num, "닉네임 변경 완료");
+		} catch (Exception e) {
+			return ResponsDto.setFailed("데이터베이스 오류: " + e);
 		}
 	}
 	
