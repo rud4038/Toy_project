@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class UpdateNicknameDto {
-	String oldNickname;
-	String newNickname;
+	String id;
+	String oldNickName;
+	String newNickName;
 }

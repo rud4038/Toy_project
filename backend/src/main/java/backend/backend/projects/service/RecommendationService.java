@@ -50,7 +50,7 @@ public class RecommendationService {
 	
 	public ResponsDto<Integer> UpdateNickname(UpdateNicknameDto nicknameDto) {
 		try {
-			int num = recommendationRepository.updateNickname(nicknameDto.getNewNickname(), nicknameDto.getOldNickname());
+			int num = recommendationRepository.updateNickname(nicknameDto.getNewNickName(), nicknameDto.getOldNickName());
 			
 			return ResponsDto.setSucces(num, "닉네임 변경 완료");
 		} catch (Exception e) {

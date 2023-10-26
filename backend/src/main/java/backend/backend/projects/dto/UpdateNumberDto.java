@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class UpdateNumberDto {
+	String id;
 	String oldNumber;
 	String newNumber;
 }

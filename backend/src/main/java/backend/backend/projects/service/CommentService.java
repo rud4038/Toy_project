@@ -64,7 +64,7 @@ public class CommentService {
 	
 	public ResponsDto<Integer> UpdateNickname(UpdateNicknameDto nicknameDto) {
 		try {
-			int num = commentRepository.updateNickname(nicknameDto.getNewNickname(), nicknameDto.getOldNickname());
+			int num = commentRepository.updateNickname(nicknameDto.getNewNickName(), nicknameDto.getOldNickName());
 			
 			return ResponsDto.setSucces(num, "닉네임 변경 완료");
 		} catch (Exception e) {

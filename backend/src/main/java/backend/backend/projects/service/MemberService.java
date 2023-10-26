@@ -1,6 +1,5 @@
 package backend.backend.projects.service;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -156,14 +155,14 @@ public class MemberService {
 	public ResponsDto<String> UpdateNickname(UpdateNicknameDto updateNicknameDto){
 		try {
 			boolean check = true;
-			check = memberRepository.existsByNickname(updateNicknameDto.getNewNickname());
+			check = memberRepository.existsByNickname(updateNicknameDto.getNewNickName());
 			
 			if(check) {
 				return ResponsDto.setFailed("변경하실 닉네임과 동일한 닉네임이 존재합니다.");
 			}
 			
-			MemberEntity memberEntity = memberRepository.findByNickname(updateNicknameDto.getOldNickname());
-			memberEntity.setNickname(updateNicknameDto.getNewNickname());
+			MemberEntity memberEntity = memberRepository.findById(updateNicknameDto.getId()).get();
+			memberEntity.setNickname(updateNicknameDto.getNewNickName());
 			
 			memberRepository.save(memberEntity);
 			
@@ -182,7 +181,7 @@ public class MemberService {
 				return ResponsDto.setFailed("변경하실 전화번호와 동일한 번호가 존재합니다.");
 			}
 			
-			MemberEntity memberEntity = memberRepository.findByNumber(updateNumberDto.getOldNumber());
+			MemberEntity memberEntity = memberRepository.findById(updateNumberDto.getId()).get();
 			memberEntity.setNumber(updateNumberDto.getNewNumber());
 			
 			memberRepository.save(memberEntity);
@@ -196,14 +195,10 @@ public class MemberService {
 	
 	public ResponsDto<String> UpdatePassword(UpdatePasswordDto updatePasswordDto){
 		try {
-			boolean check = false;
-			check = memberRepository.existsByPassword(updatePasswordDto.getOldPassword());
-			
-			if(!check) {
+			MemberEntity memberEntity = memberRepository.findById(updatePasswordDto.getId()).get();
+			if(!memberEntity.getPassword().equals(updatePasswordDto.getOldPassword())) {
 				return ResponsDto.setFailed("비밀번호를 잘못 입력하셨습니다.");
 			}
-			
-			MemberEntity memberEntity = memberRepository.findByPassword(updatePasswordDto.getOldPassword());
 			memberEntity.setPassword(updatePasswordDto.getNewPassword());
 			
 			memberRepository.save(memberEntity);

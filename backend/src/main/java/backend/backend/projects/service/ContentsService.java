@@ -162,7 +162,7 @@ public class ContentsService {
 	
 	public ResponsDto<Integer> UpdateNickname(UpdateNicknameDto nicknameDto) {
 		try {
-			int num = contentsRepository.updateNickname(nicknameDto.getNewNickname(), nicknameDto.getOldNickname());
+			int num = contentsRepository.updateNickname(nicknameDto.getNewNickName(), nicknameDto.getOldNickName());
 			
 			return ResponsDto.setSucces(num, "닉네임 변경 완료");
 		} catch (Exception e) {
