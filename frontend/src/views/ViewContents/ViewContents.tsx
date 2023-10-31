@@ -101,6 +101,21 @@ function ViewContents() {
     return (
         <div className='ViewContents'>
             <div className='view-full-box'>
+                <div className='view-head-box'>
+                    <div className='view-head-titlebox'>
+                        <div className='view-head-title'>{variables.contents_title}</div>
+                        <div className='view-head-date'>{variables.contents_date}</div>
+                    </div>
+                    <div className='view-info-box'>
+                        <div>{variables.contents_nickname}</div>
+                        <div className='view-count-box'>
+                            <div>조회 수</div>
+                            <div>{variables.contents_views}</div>
+                            <div>추천 수</div>
+                            <div>{variables.contents_recommendation}</div>
+                        </div>
+                    </div>
+                </div>
                 <div dangerouslySetInnerHTML={ {__html: variables.contents_con}} className='view-contents-box'></div>
                 <div className='view-comments-box'>
                     <div className='comments-small-box'>
@@ -109,7 +124,7 @@ function ViewContents() {
                             <button className='comments-input-btn' onClick={() => UploadComment()}>등록</button>
                         </div>
                         <div className='comment-title'>
-                            <div>요리 후기 </div>
+                            <div>댓글</div>
                             <div className='comment-count'>{commentList.length}</div>
                         </div>
                         {commentList.map((item : any) => (
@@ -117,8 +132,6 @@ function ViewContents() {
                                 <div className='comment-contents-head'>
                                     <div className='comment-contents-nickname'>{item.nickname}</div>
                                     <div className='comment-contents-date'>{item.commentDate}</div>
-                                    <span className='comment-float'>|</span>
-                                    <div className='comment-btn'>답글</div>
                                     {(member != null && item.nickname === member.nickname) ? (<>
                                     <span className='comment-float'>|</span>
                                     {(commentNum === item.commentNumber) ? (<>

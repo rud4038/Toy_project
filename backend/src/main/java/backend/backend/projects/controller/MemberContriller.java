@@ -14,6 +14,7 @@ import backend.backend.projects.dto.FindIdDto;
 import backend.backend.projects.dto.FindPasswordDto;
 import backend.backend.projects.dto.LogInResponseDto;
 import backend.backend.projects.dto.LoginDto;
+import backend.backend.projects.dto.MemberDeleteDto;
 import backend.backend.projects.dto.MemberDto;
 import backend.backend.projects.dto.MemberInfoResponseDto;
 import backend.backend.projects.dto.ResponsDto;
@@ -76,8 +77,9 @@ public class MemberContriller {
 		return memberService.UpdatePassword(updatePasswordDto);
 	}
 	
-	@DeleteMapping("/delete/{id}")
-	public ResponsDto<String> DeleteMember(@PathVariable("id") String id) {
-		return memberService.DeleteMember(id);
+	@PostMapping("/delete")
+	public ResponsDto<String> DeleteMember(@RequestBody MemberDeleteDto deleteDto) {
+		System.out.println(deleteDto.toString());
+		return memberService.DeleteMember(deleteDto);
 	}
 }

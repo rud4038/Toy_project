@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import backend.backend.projects.dto.RecommendationResponseDto;
 import backend.backend.projects.entity.RecommendationEntity;
+import jakarta.transaction.Transactional;
 
 @Repository
 public interface RecommendationRepository extends JpaRepository<RecommendationEntity, Integer> {
@@ -21,6 +22,11 @@ public interface RecommendationRepository extends JpaRepository<RecommendationEn
 	@Modifying(clearAutomatically = true)
 	@Query("update recommendation r set r.nickname = ?1 where r.nickname = ?2")
 	int updateNickname(String newNickname, String oldNickname);
+	
+	@Transactional
+	@Modifying
+	public void deleteAllByNickname(String nickname);
+	
 
 }
 

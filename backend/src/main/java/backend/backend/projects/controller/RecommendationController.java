@@ -47,4 +47,9 @@ public class RecommendationController {
 	public ResponsDto<String> RecommendationDelete(@RequestBody RecommendationDeleteDto deleteDto) {
 		return recommendationService.RecommendationDelete(deleteDto);
 	}
+	
+	@DeleteMapping("deleteAll/{nickname}")
+	public ResponsDto<List<Integer>> RecommendationDeleteAll(@PathVariable("nickname") String nickname) {
+		return recommendationService.RecommendationDeleteAll(nickname);
+	}
 }

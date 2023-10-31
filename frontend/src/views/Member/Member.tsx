@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Member.css'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 function Member() {
     const [id, setId] = useState<String>('');
@@ -9,6 +9,7 @@ function Member() {
     const [number, setNumber] = useState<String>('');
     const [password, setPassword] = useState<String>('');
     const [password2, setPassword2] = useState<String>('');
+    const navigator = useNavigate();
 
     const inputCheck = async () => {
         if(password != password2){
@@ -26,6 +27,7 @@ function Member() {
         };
         const response = await axios.post('http://localhost:4040/member/SignUp', data)
         alert(response.data.message);
+        navigator('/')
     }
 
     return (

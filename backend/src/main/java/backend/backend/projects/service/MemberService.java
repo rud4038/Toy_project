@@ -8,6 +8,7 @@ import backend.backend.projects.dto.FindIdDto;
 import backend.backend.projects.dto.FindPasswordDto;
 import backend.backend.projects.dto.LogInResponseDto;
 import backend.backend.projects.dto.LoginDto;
+import backend.backend.projects.dto.MemberDeleteDto;
 import backend.backend.projects.dto.MemberDto;
 import backend.backend.projects.dto.MemberInfoResponseDto;
 import backend.backend.projects.dto.ResponsDto;
@@ -106,11 +107,11 @@ public class MemberService {
 	public ResponsDto<LogInResponseDto> LogIn(LoginDto loginDto) {
 		MemberEntity memberEntity;
 		try {
-			memberEntity = memberRepository.findById(loginDto.getId()).get();
-			
-			if(memberEntity == null) {
+			if(!memberRepository.existsById(loginDto.getId())) {
 				return ResponsDto.setFailed("아이디를 잘못 입력하셨습니다.");
 			}
+			
+			memberEntity = memberRepository.findById(loginDto.getId()).get();
 			
 			if(!memberEntity.getPassword().equals(loginDto.getPassword())) {
 				return ResponsDto.setFailed("비밀번호를 잘못 입력하셨습니다.");
@@ -210,9 +211,13 @@ public class MemberService {
 		}
 	}
 	
-	public ResponsDto<String> DeleteMember(String id) {
+	public ResponsDto<String> DeleteMember(MemberDeleteDto deleteDto) {
 		try {
-			memberRepository.deleteById(id);
+			MemberEntity memberEntity =  memberRepository.findById(deleteDto.getId()).get();
+			if(!memberEntity.getPassword().equals(deleteDto.getPassword())) {
+				return ResponsDto.setFailed("비밀번호를 잘못 입력하셨습니다.");
+			}
+			memberRepository.deleteById(deleteDto.getId());
 			return ResponsDto.setSucces(null, "회원 탈퇴 완료");
 		} catch (Exception e) {
 			return ResponsDto.setFailed("데이터 베이스 문제 발생: " + e);

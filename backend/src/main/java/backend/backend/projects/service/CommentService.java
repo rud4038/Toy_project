@@ -82,4 +82,13 @@ public class CommentService {
 		}
 	}
 	
+	public ResponsDto<String> CommentDeleteAll(String nickname) {
+		try {
+			commentRepository.deleteAllByNickname(nickname);
+			return ResponsDto.setSucces(null, "전체 댓글 삭제 완료");
+		} catch (Exception e) {
+			return ResponsDto.setFailed("데이터베이스 오류: " + e);
+		}
+	}
+	
 }

@@ -8,6 +8,7 @@ import './MemberInfo.css';
 import { memberStore } from '../../stores';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 function MemberInfo() {
 
@@ -16,7 +17,8 @@ function MemberInfo() {
     const [ nickNameOpen, setNickNameOpen ] = useState(false);
     const [ numberOpen, setNumberOpen ] = useState(false);
     const [ passwordOpen, setPasswordOpen ] = useState(false);
-    const { member } = memberStore();
+    const [ deleteOpen, setDeleteOpen ] = useState(false);
+    const { member, removeMember } = memberStore();
     const [memberInfo, setMemberInfo] = useState<any>([]);
     const [ newName, setNewName] = useState<any>("");
     const [ newNickName, setNewNickName] = useState<any>("");
@@ -24,6 +26,7 @@ function MemberInfo() {
     const [ oldPassword, setOldPassword] = useState<any>("");
     const [ newPassword, setNewPassword] = useState<any>("");
     const [ newPasswordCheck, setNewPasswordCheck] = useState<any>("");
+    const [cookies , setCookies] = useCookies();
 
     const nameHandleClickOpen = () => {
         setNameOpen(true);
@@ -55,6 +58,14 @@ function MemberInfo() {
 
     const passwordHandleClose = () => {
         setPasswordOpen(false);
+    }
+
+    const deleteHandleClickOpen = () => {
+        setDeleteOpen(true);
+    }
+
+    const deleteHandleClose = () => {
+        setDeleteOpen(false);
     }
 
     const loadMemberInfo = async() => {
@@ -118,6 +129,7 @@ function MemberInfo() {
         axios.post('http://localhost:4040/member/UpdatePassword',data)
         .then((response) => {
             alert(response.data.message);
+            logOutHandler();
         })
         navigator('/');
 
@@ -179,6 +191,59 @@ function MemberInfo() {
             newNickName
         }
         axios.post('http://localhost:4040/recommendation/updateNickname',data)
+    }
+
+    const memberDelete = async () => {
+        const id = member.id;
+        const password = oldPassword;
+        const data = {
+            id,
+            password
+        }
+        console.log(data);
+        await axios.post('http://localhost:4040/member/delete',data)
+        .then((response) => {
+            console.log(response)
+            if(response.data.result){
+                commentDeleteAll();
+                contentsDeleteAll();
+                recommendationDeleteAll();
+                logOutHandler();
+            }
+        })
+        navigator('/')
+    }
+
+    const commentDeleteAll = () => {
+        const nickname = memberInfo.nickname;
+        axios.delete(`http://localhost:4040/comment/deleteAll/${nickname}`);
+    }
+
+    const contentsDeleteAll = () => {
+        const nickname = memberInfo.nickname;
+        axios.delete(`http://localhost:4040/contents/ContentsDeleteAll/${nickname}`);
+    }
+
+    const recommendationDeleteAll = () => {
+        const nickname = memberInfo.nickname;
+        axios.delete(`http://localhost:4040/recommendation/deleteAll/${nickname}`)
+        .then((response) => {
+            if(response.data.result) {
+                contentsRecommendationCountDown(response.data.data);
+            }
+        })
+    }
+
+    const contentsRecommendationCountDown = (contents_numberList : number[]) => {
+        contents_numberList.forEach(contents_number => {
+            axios.get(`http://localhost:4040/contents/RecommendationCountDown/${contents_number}`)
+        })
+    }
+
+    const logOutHandler = () => {
+        setCookies('token','',{expires : new Date()});
+        removeMember();
+        alert('로그아웃 되었습니다.')
     }
 
     useEffect(() => {
@@ -272,7 +337,20 @@ function MemberInfo() {
                             </Dialog>
                         </div>
                         <div className='member-delete-box'>
-                            <button className='member-delete-btn'>회원 탈퇴</button>
+                            <button className='member-delete-btn' onClick={deleteHandleClickOpen}>회원 탈퇴</button>
+                            <Dialog open={deleteOpen} onClose={deleteHandleClose}>
+                                <div className='name-update-modal'>
+                                    <div className='modal-xmark-box'>
+                                        <button className='modal-xmark-btn' onClick={deleteHandleClose}><FontAwesomeIcon icon = { faXmark }></FontAwesomeIcon></button>
+                                    </div>
+                                    <h4 className='modal-title'>회원 탈퇴를 하시려면 비밀번호를 입력해 주세요.</h4>
+                                    <input type="text" className='modal-input'  placeholder="비밀번호" onChange={(e) => setOldPassword(e.target.value)}/>
+                                </div>
+                                <div className='modal-btn-box'>
+                                    <button onClick={deleteHandleClose} className='modal-cansle-btn'>취소</button>
+                                    <button onClick={ memberDelete } className='modal-success-btn'>확인</button>
+                                </div>
+                            </Dialog>
                         </div>
                     </div>
                 </div>

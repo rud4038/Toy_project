@@ -69,4 +69,14 @@ public class RecommendationService {
 		}
 	}
 	
+	public ResponsDto<List<Integer>> RecommendationDeleteAll(String nickname) {
+		try {
+			List<Integer> recommendationList = recommendationRepository.findAllByNickname(nickname);
+			recommendationRepository.deleteAllByNickname(nickname);
+			return ResponsDto.setSucces(recommendationList, "전체 추천 삭제 완료");
+		} catch (Exception e) {
+			return ResponsDto.setFailed("데이터베이스 오류: " + e);
+		}
+	}
+	
 }

@@ -15,7 +15,7 @@ function Main() {
 
     const [variables, SetVariables] = useState<any[]>([]);
     const [value, setValue] = React.useState(0);
-    const [rcList, SetRcList] = useState<number[]>([]);
+    const [rcList, SetRcList] = useState<number[]>([-1]);
     const [pageSize, setPageSize] = useState<number>(1);
     const [page, setPage] = useState<number>(1);
     const [viewItems, setViewItems] = useState<any[]>([]);
@@ -116,7 +116,9 @@ function Main() {
         .then((response) => {
             console.log('추천목록');
             console.log(response.data.data);
-            SetRcList(response.data.data);
+            if(response.data.result){
+                SetRcList(response.data.data);
+            }
             return
         })
         return

@@ -170,5 +170,14 @@ public class ContentsService {
 		}
 	}
 	
+	public ResponsDto<String> ContentsDeleteAll(String nickname) {
+		try {
+			contentsRepository.deleteAllByNcikname(nickname);
+			return ResponsDto.setSucces(null, "전체 게시물 삭제 완료");
+		} catch (Exception e) {
+			return ResponsDto.setFailed("데이터베이스 오류: " + e);
+		}
+	}
+	
 	
 }

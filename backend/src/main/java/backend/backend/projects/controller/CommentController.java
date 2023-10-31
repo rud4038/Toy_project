@@ -54,5 +54,10 @@ public class CommentController {
 		return commentService.DeleteComment(comment_number);
 	}
 	
+	@DeleteMapping("deleteAll/{nickname}")
+	public ResponsDto<String> CommenetDeleteAll(@PathVariable("nickname") String nickname) {
+		return commentService.CommentDeleteAll(nickname);
+	}
+	
 	
 }
