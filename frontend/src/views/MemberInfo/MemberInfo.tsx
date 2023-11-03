@@ -116,6 +116,11 @@ function MemberInfo() {
     }
     
     const updatePassword = () => {
+        const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/
+        if(!passwordRegex.test(newPassword)){
+            alert('숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!');
+            return;
+        }
         if(newPassword != newPasswordCheck) {
             return alert('변경 할 비밀번호를 다르게 입력하셨습니다.');
         }
@@ -137,7 +142,11 @@ function MemberInfo() {
 
     const updateMemberNickName = async() => {
         if(newNickName.length === 0) {
-            return alert('변경하실 닉네임을 입력해 주세요');
+            alert('변경하실 닉네임을 입력해 주세요');
+            return; 
+        }
+        if(newNickName.length > 10){
+            alert('닉네임 입력 가능 자릿수를 초과하셨습니다.')
         }
         const id = member.id;
         const oldNickName = memberInfo.nickname;
@@ -246,6 +255,12 @@ function MemberInfo() {
         alert('로그아웃 되었습니다.')
     }
 
+    const numberConfirm = (e : React.ChangeEvent<HTMLInputElement>) => {
+        const numberCheck = e.target.value.replace(/[^0-9]/g, '')
+
+        setNewNumber(numberCheck);
+      }
+
     useEffect(() => {
         loadMemberInfo()
     },[])
@@ -284,7 +299,7 @@ function MemberInfo() {
                                         <div className='modal-xmark-box'>
                                             <button className='modal-xmark-btn' onClick={nickNameHandleClose}><FontAwesomeIcon icon = { faXmark }></FontAwesomeIcon></button>
                                         </div>
-                                        <h4 className='modal-title'>변경하실 닉네임을 입력해 주세요.</h4>
+                                        <h4 className='modal-title'>변경하실 닉네임을 10자리 이하로 입력해 주세요.</h4>
                                         <input type="text" className='modal-input'  placeholder="닉네임" onChange={(e) => setNewNickName(e.target.value)}/>
                                     </div>
                                     <div className='modal-btn-box'>
@@ -306,7 +321,7 @@ function MemberInfo() {
                                         <button className='modal-xmark-btn' onClick={numberHandleClose}><FontAwesomeIcon icon = { faXmark }></FontAwesomeIcon></button>
                                     </div>
                                     <h4 className='modal-title'>변경하실 전화번호를 입력해 주세요.</h4>
-                                    <input type="text" className='modal-input'  placeholder="전화번호" onChange={(e) => setNewNumber(e.target.value)}/>
+                                    <input type="text" className='modal-input'  placeholder="전화번호" maxLength={11} onChange={numberConfirm}  value={newNumber}/>
                                 </div>
                                 <div className='modal-btn-box'>
                                     <button onClick={numberHandleClose} className='modal-cansle-btn'>취소</button>

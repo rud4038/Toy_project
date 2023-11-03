@@ -14,7 +14,7 @@
     width: 500px;
 }
 .Member-id{
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     border: none;
     border-bottom: 1px solid black;
     width: 100%;
@@ -51,4 +51,8 @@
 }
 .Member-info.active {
     border-right: 1px solid black;
+}
+.input-msg {
+    font-size: 15px;
+    color: red;
 }
